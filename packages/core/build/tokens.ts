@@ -46,6 +46,8 @@ const space = {
 };
 
 const color = {
+  black: token([0, 0, 0]),
+  white: token([0, 0, 100]),
   green: {
     50: token([93, 80, 94]),
     100: token([93, 80, 83]),
@@ -311,11 +313,11 @@ const color = {
 
 const typography = {
   color: {
-    100: token(color.gray[0]),
+    100: token(color.white),
     200: token(color.construction[600]), // placeholders
     300: token(color.construction[800]), // labels
     400: token(color.construction[900]), // headings
-    500: token(color.gray[1000]), // content
+    500: token(color.black), // content
   },
   fontWeight: {
     // Clarity City is limited to 400-500, tokens provide hooks for customization
@@ -417,6 +419,25 @@ const typography = {
   },
 };
 
+const animation = {
+  duration: {
+    instant: token('0s'),
+    quickest: token('0.1s'),
+    quicker: token('0.15s'),
+    quick: token('0.2s'),
+    secondary: token('0.3s'),
+    primary: token('0.4s'),
+    slow: token('0.5s'),
+    slower: token('0.7s'),
+    slowest: token('0.8s'),
+  },
+  easing: {
+    primary: token('cubic-bezier(0,.99,0,.99)'),
+    secondary: token('cubic-bezier(0, 1.5, 0.5, 1)'),
+    loop: token('cubic-bezier(0.17, 0.4, 0.8, 0.79)'),
+  },
+};
+
 const aliases = {
   object: {
     border: {
@@ -450,11 +471,11 @@ const aliases = {
     },
     interaction: {
       background: {
-        value: token(color.gray[0]),
+        value: token(color.white),
         hover: token(color.blue[50]),
         active: token(color.blue[100]),
         selected: token(color.blue[50]),
-        disabled: token(color.gray[0]),
+        disabled: token(color.white),
         highlight: token(color.blue[700]),
       },
       color: {
@@ -469,11 +490,11 @@ const aliases = {
       background: token(color.gray[50]),
     },
     overlay: {
-      background: token(color.gray[0]),
+      background: token(color.white),
       backdropBackground: token('hsla(0, 0%, 0%, 0.6)'),
     },
     container: {
-      background: token(color.gray[0]),
+      background: token(color.white),
       borderColor: token(color.construction[200]),
     },
   },
@@ -518,6 +539,6 @@ const aliases = {
 };
 
 export const baseTheme: CdsTheme = {
-  global: { layout, space, color, typography },
+  global: { layout, space, color, typography, animation },
   aliases,
 };

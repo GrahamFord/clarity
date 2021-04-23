@@ -67,7 +67,6 @@ export default {
   argTypes: getElementStorybookArgTypes('cds-icon', customElements),
   parameters: {
     options: { showPanel: true },
-    a11y: { disable: true }, // disabled for performance
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/v2mkhzKQdhECXOx8BElgdA/Clarity-UI-Library---light-2.2.0?node-id=0%3A2700',
@@ -79,7 +78,7 @@ export function all() {
   const search = text('search', '', propertiesGroup);
   const size = select(
     'size',
-    { 'sm (default)': 'sm', md: 'md', lg: 'lg', xl: 'xl', xxl: 'xxl' },
+    { xs: 'xs', 'sm (default)': 'sm', md: 'md', lg: 'lg', xl: 'xl', xxl: 'xxl' },
     'lg',
     propertiesGroup
   );
@@ -229,6 +228,11 @@ export function icon() {
 /** @website */
 export function sizes() {
   return html`
+    <cds-icon
+      shape="house"
+      size="xs"
+      aria-label="This is an example of an icon using a pre-defined extra small size"
+    ></cds-icon>
     <cds-icon
       shape="house"
       size="sm"
@@ -413,7 +417,7 @@ export function statusInverse() {
       <cds-icon shape="user" inverse status="info" size="lg" solid aria-label="This is an example of an icon of a user completely filled in with the blue, informational color on a dark background"></cds-icon>
       <cds-icon shape="user" inverse status="success" size="lg" solid aria-label="This is an example of an icon of a user on a dark background completely filled in with a green color indicating success"></cds-icon>
       <cds-icon shape="user" inverse status="warning" size="lg" solid aria-label="This is an example of an icon of a user on a dark background completely filled in with a dark orange color indicating warning"></cds-icon>
-      <cds-icon shape="user" inverse status="danger" size="lg" solid aria-label="This is an example of an icon of a user on a dark background completely filled in with a red color indicating danger or an error"></cds-icon>></cds-icon>
+      <cds-icon shape="user" inverse status="danger" size="lg" solid aria-label="This is an example of an icon of a user on a dark background completely filled in with a red color indicating danger or an error"></cds-icon></cds-icon>
     </cds-demo>
   `;
 }

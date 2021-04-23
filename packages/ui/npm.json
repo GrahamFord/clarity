@@ -1,6 +1,6 @@
 {
   "name": "@clr/ui",
-  "version": "@VERSION",
+  "version": "5.1.1",
   "description": "CSS for Clarity",
   "homepage": "https://clarity.design",
   "repository": {
@@ -8,7 +8,8 @@
     "url": "https://github.com/vmware/clarity.git"
   },
   "peerDependencies": {
-    "@clr/icons": "./dist/icons"
+    "@clr/icons": "./dist/icons",
+    "@cds/core": "./dist/core"
   },
   "author": "clarity",
   "license": "MIT",

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2020 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2021 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -7,7 +7,7 @@
 import { html } from 'lit-html';
 import '@cds/core/modal/register.js';
 import { CdsModalContent } from '@cds/core/modal';
-import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test/utils';
+import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
 
 describe('modal-content element', () => {
   let testElement: HTMLElement;
@@ -20,7 +20,7 @@ describe('modal-content element', () => {
   beforeEach(async () => {
     testElement = await createTestElement(html`<cds-modal-content>${placeholderContent}</cds-modal-content>`);
     testElementWithLayout = await createTestElement(
-      html`<cds-modal-content cds-layout="elliptical">${placeholderContent}</cds-modal-content>`
+      html`<cds-modal-content tabindex="0" cds-layout="elliptical">${placeholderContent}</cds-modal-content>`
     );
     component = testElement.querySelector<CdsModalContent>('cds-modal-content');
     componentWithLayout = testElementWithLayout.querySelector<CdsModalContent>('cds-modal-content');
@@ -48,12 +48,18 @@ describe('modal-content element', () => {
     });
   });
 
-  it('should override layout defaults', async () => {
+  it('should have tabindex "-1"', async () => {
+    await componentIsStable(component);
+    expect(component.getAttribute('tabindex')).toBe('-1');
+  });
+
+  it('should override layout and tabindex defaults', async () => {
     await componentIsStable(componentWithLayout);
     expect(componentWithLayout.shadowRoot.querySelector('div')).toBeNull('default wrapper div is not rendered');
     expect(componentWithLayout.getAttribute('cds-layout').indexOf('elliptical') > -1).toBe(
       true,
       `carries through overridden layout`
     );
+    expect(componentWithLayout.getAttribute('tabindex')).toBe('0', `can override tabindex`);
   });
 });

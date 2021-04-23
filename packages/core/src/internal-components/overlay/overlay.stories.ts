@@ -6,6 +6,7 @@
 
 import '@cds/core/internal-components/overlay/register.js';
 import '@cds/core/button/register.js';
+import { ClarityMotion, AnimationHingeConfig, AnimationHingeName } from '@cds/core/internal';
 
 import { getElementStorybookArgTypes, spreadProps, getElementStorybookArgs } from '@cds/core/internal';
 import { html } from 'lit-html';
@@ -13,8 +14,10 @@ import customElements from '../../../dist/core/custom-elements.json';
 
 import { CdsInternalOverlay } from '@cds/core/internal-components/overlay/index.js';
 
+ClarityMotion.add(AnimationHingeName, AnimationHingeConfig);
+
 export default {
-  title: 'Internal/APIs/Overlay/Stories',
+  title: 'Internal Stories/Overlay',
   component: 'cds-internal-overlay',
   argTypes: getElementStorybookArgTypes('cds-internal-overlay', customElements),
   parameters: {
@@ -34,9 +37,7 @@ export const API = (args: any) => {
     <cds-demo popover>
       <cds-button status="primary" type="button" @click=${showApiOverlay}>Show Overlay</cds-button>
       <cds-internal-overlay ...="${spreadProps(getElementStorybookArgs(args))}" hidden id="${overlayId}">
-        <div cds-layout="p:lg" style="background: white">
-          ${args.default}
-        </div>
+        <div cds-layout="p:lg" style="background: white">${args.default}</div>
       </cds-internal-overlay>
     </cds-demo>
   `;
@@ -47,7 +48,7 @@ export const API = (args: any) => {
 
     if (!initted) {
       myOverlay.addEventListener('closeChange', () => {
-        myOverlay.setAttribute('hidden', 'true');
+        myOverlay.setAttribute('hidden', '');
       });
       initted = true;
     }
@@ -85,7 +86,10 @@ export const interactive = () => {
 
     if (!initted) {
       myOverlay.addEventListener('closeChange', () => {
-        myOverlay.setAttribute('hidden', 'true');
+        myOverlay.setAttribute('hidden', '');
+      });
+      myOverlay.addEventListener('cdsMotionChange', (e: any) => {
+        console.log(e.detail);
       });
       initted = true;
     }
@@ -106,7 +110,7 @@ export const interactive = () => {
     </style>
     <cds-button status="primary" type="button" @click=${showOverlay}>Show Overlay Demo</cds-button>
     <cds-internal-overlay hidden id="${overlayId}">
-      <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-overlay">
+      <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-overlay" tabindex="-1">
         <h1 cds-text="section">An overlay demo</h1>
         <p cds-text="body">I am an overlay.</p>
         <cds-button block status="danger" type="button" @click=${hideOverlay}>Close Overlay Demo</cds-button>
@@ -127,12 +131,12 @@ export const multiple = () => {
     if (!initted) {
       const parentOverlay = document.getElementById(multiOverlayId) as CdsInternalOverlay;
       parentOverlay.addEventListener('closeChange', () => {
-        parentOverlay.setAttribute('hidden', 'true');
+        parentOverlay.setAttribute('hidden', '');
       });
 
       const childOverlay = document.getElementById(multiChildOverlayId) as CdsInternalOverlay;
       childOverlay.addEventListener('closeChange', () => {
-        childOverlay.setAttribute('hidden', 'true');
+        childOverlay.setAttribute('hidden', '');
       });
 
       initted = true;
@@ -160,8 +164,8 @@ export const multiple = () => {
     </style>
     <cds-button status="primary" type="button" @click=${showMultiOverlay}>Show Layered Overlays</cds-button>
     <cds-internal-overlay hidden id="${multiOverlayId}">
-      <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-multi-overlay">
-        <h1 cds-text="section">A demo of layered overlays</h1>
+      <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-multi-overlay" tabindex="-1">
+        <h1 cds-text="section" tabindex="-1">A demo of layered overlays</h1>
         <p cds-text="body">
           I am a demo showing how overlays can be placed or layered on top of one another. I am the overlay on the
           bottom layer.
@@ -180,8 +184,8 @@ export const multiple = () => {
       </div>
     </cds-internal-overlay>
     <cds-internal-overlay hidden id="${multiChildOverlayId}">
-      <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-multi-overlay" style="width: 300px">
-        <h1 cds-text="section">An overlay on top of another overlay</h1>
+      <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-multi-overlay" style="width: 300px" tabindex="-1">
+        <h1 cds-text="section" tabindex="-1">An overlay on top of another overlay</h1>
         <p cds-text="body">I am a demo of an overlay layered over another overlay!</p>
         <cds-button block status="danger" type="button" @click=${hideChildOverlay}>Close Top Overlay</cds-button>
       </div>
@@ -199,7 +203,7 @@ export const firstFocus = () => {
 
     if (!initted) {
       myOverlay.addEventListener('closeChange', () => {
-        myOverlay.setAttribute('hidden', 'true');
+        myOverlay.setAttribute('hidden', '');
       });
       initted = true;
     }
@@ -220,8 +224,8 @@ export const firstFocus = () => {
     </style>
     <cds-button status="primary" type="button" @click=${showOverlay}>Show Overlay With Managed Focus</cds-button>
     <cds-internal-overlay hidden id="${overlayId}">
-      <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-overlay">
-        <h1 cds-text="section" tabindex="0" cds-first-focus>Overlay with first-focus</h1>
+      <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-overlay" tabindex="-1">
+        <h1 cds-text="section">Overlay with <span tabindex="-1" cds-first-focus>first-focus</span></h1>
         <p cds-text="body">
           I am an overlay with focus assigned to an element inside me. I assigned first focus to my header. It is
           assigned focus when I am opened.
@@ -261,7 +265,12 @@ export const custom = () => {
 
     <cds-demo popover>
       <cds-internal-overlay _demo-mode id="${purpleOverlayId}" class="purple-overlay">
-        <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-multi-overlay" style="width: 480px">
+        <div
+          cds-layout="vertical gap:lg p:lg align:stretch"
+          class="my-multi-overlay"
+          style="width: 480px"
+          tabindex="-1"
+        >
           <h1 cds-text="section">I am a purple overlay</h1>
           <p cds-text="body">Hello, I am an overlay with a purple backdrop.</p>
           <div cds-layout="horizontal gap:md wrap:none align:stretch">
@@ -277,7 +286,7 @@ export const custom = () => {
         </div>
       </cds-internal-overlay>
       <cds-internal-overlay _demo-mode hidden id="${whiteOverlayId}" class="white-overlay">
-        <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-multi-overlay">
+        <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-multi-overlay" tabindex="-1">
           <h1 cds-text="section">I am whitish</h1>
           <p cds-text="body">Hello, I am an overlay with a mostly opaque white backdrop!</p>
           <div cds-layout="horizontal gap:md wrap:none align:stretch">
@@ -302,7 +311,7 @@ export const custom = () => {
         </div>
       </cds-internal-overlay>
       <cds-internal-overlay _demo-mode hidden id="${orangeOverlayId}" class="orange-overlay">
-        <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-multi-overlay">
+        <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-multi-overlay" tabindex="-1">
           <h1 cds-text="section" id="custom-demo-3-title">I am orange</h1>
           <p cds-text="body">Hello, I am an overlay with an opaque orange backdrop!</p>
           <cds-button
@@ -330,13 +339,13 @@ export const custom = () => {
       const whiteOverlay = document.getElementById(whiteOverlayId) as CdsInternalOverlay;
       whiteOverlay.shadowRoot.querySelector('.overlay-backdrop').classList.add('layered');
       whiteOverlay.addEventListener('closeChange', () => {
-        whiteOverlay.setAttribute('hidden', 'true');
+        whiteOverlay.setAttribute('hidden', '');
       });
 
       const orangeOverlay = document.getElementById(orangeOverlayId) as CdsInternalOverlay;
       orangeOverlay.shadowRoot.querySelector('.overlay-backdrop').classList.add('layered');
       orangeOverlay.addEventListener('closeChange', () => {
-        orangeOverlay.setAttribute('hidden', 'true');
+        orangeOverlay.setAttribute('hidden', '');
       });
 
       initted = true;
@@ -353,4 +362,92 @@ export const custom = () => {
       (getOverlayByColor(color) as CdsInternalOverlay).closeOverlay();
     });
   }
+};
+
+export const overrideAnimation = () => {
+  let initted = false;
+  const overlayId = 'overlay-motion-override';
+
+  function showOverrideOverlay() {
+    const myOverlay = document.getElementById(overlayId) as CdsInternalOverlay;
+    myOverlay.removeAttribute('hidden');
+
+    if (!initted) {
+      myOverlay.addEventListener('closeChange', () => {
+        myOverlay.setAttribute('hidden', '');
+      });
+      myOverlay.addEventListener('cdsMotionChange', (e: any) => {
+        console.log(e.detail);
+      });
+      initted = true;
+    }
+  }
+
+  function hideOverrideOverlay() {
+    const myOverlay = document.getElementById(overlayId) as CdsInternalOverlay;
+    myOverlay.closeOverlay();
+  }
+
+  return html` <style>
+      .my-overlay {
+        background: white;
+        border: 1px solid #565656;
+        width: 480px;
+        height: auto;
+      }
+    </style>
+    <cds-button status="primary" type="button" @click=${showOverrideOverlay}>Show Custom Exit</cds-button>
+    <cds-internal-overlay hidden id="${overlayId}" cds-motion='{ "hidden": { "true": "cds-modal-hinge-exit" } }'>
+      <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-overlay" tabindex="-1">
+        <h1 cds-text="section">An overlay demo</h1>
+        <p cds-text="body">I am an overlay.</p>
+        <cds-button block status="danger" type="button" @click=${hideOverrideOverlay}>Close Overlay Demo</cds-button>
+      </div>
+    </cds-internal-overlay>`;
+};
+
+export const lowMotion = () => {
+  let initted = false;
+  const overlayId = 'overlay-low-motion';
+
+  function showLowMotionOverlay() {
+    const myOverlay = document.getElementById(overlayId) as CdsInternalOverlay;
+    myOverlay.removeAttribute('hidden');
+
+    if (!initted) {
+      myOverlay.addEventListener('closeChange', () => {
+        myOverlay.setAttribute('hidden', '');
+      });
+      myOverlay.addEventListener('cdsMotionChange', (e: any) => {
+        console.log(e.detail);
+      });
+      initted = true;
+    }
+  }
+
+  function hideLowMotionOverlay() {
+    const myOverlay = document.getElementById(overlayId) as CdsInternalOverlay;
+    myOverlay.closeOverlay();
+  }
+
+  return html` <style>
+      .my-overlay {
+        background: white;
+        border: 1px solid #565656;
+        width: 480px;
+        height: auto;
+      }
+    </style>
+    <div cds-theme="low-motion">
+      <cds-button status="primary" type="button" @click=${showLowMotionOverlay}>Show Low Motion</cds-button>
+      <cds-internal-overlay hidden id="${overlayId}" cds-motion="on">
+        <div cds-layout="vertical gap:lg p:lg align:stretch" class="my-overlay" tabindex="-1">
+          <h1 cds-text="section">An overlay demo</h1>
+          <p cds-text="body">I am an overlay.</p>
+          <cds-button block status="danger" type="button" @click=${hideLowMotionOverlay}
+            >Close Low Motion Demo</cds-button
+          >
+        </div>
+      </cds-internal-overlay>
+    </div>`;
 };

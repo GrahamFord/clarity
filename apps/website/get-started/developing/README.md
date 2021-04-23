@@ -24,9 +24,11 @@ We also recommend using normalize.css to eliminate any browser differences.
 
 To get started quickly you can install our global single bundle which includes
 all our global style modules. To install the global styles you can import via CSS
-Preprocessor like Sass/Less or reference the CSS directly in your HTML.
+Preprocessor like Sass/Less or reference the CSS directly in your HTML. The paths listed below may
+be different depending on your build tooling
 
 ```scss
+// Sass file syntax
 @import '~normalize.css/normalize.css'; // css reset
 @import '~@cds/core/global.min'; // clarity global styles
 @import '~@cds/core/styles/module.shims.min'; // non-evergreen browser shims
@@ -34,6 +36,7 @@ Preprocessor like Sass/Less or reference the CSS directly in your HTML.
 ```
 
 ```html
+<!-- HTML file syntax -->
 <link href="/node_modules/normalize.css/normalize.css" rel="stylesheet" />
 <link href="/node_modules/@cds/core/global.min.css" rel="stylesheet" />
 <link href="/node_modules/@cds/core/styles/module.shims.min.css" rel="stylesheet" />
@@ -73,7 +76,7 @@ Once imported, the component is automatically registered and ready to use in you
 </script>
 ```
 
-<a href="https://github.com/vmware/clarity/tree/master/apps" target="_blank" rel="noopener">
+<a href="https://github.com/vmware/clarity/tree/next/apps" target="_blank" rel="noopener">
   <cds-button status="primary" size="md">Example Apps</cds-button>
 </a>
 
@@ -130,7 +133,7 @@ To listen to events use the Angular <code>(event)</code> binding syntax.
 </cds-alert>
 ```
 
-<a href="https://github.com/vmware/clarity/tree/master/apps/core-angular-cli" target="_blank" rel="noopener">
+<a href="https://github.com/vmware/clarity/tree/next/apps/core-angular-cli" target="_blank" rel="noopener">
   <cds-button status="primary" size="md">Example Angular App</cds-button>
 </a>
 
@@ -158,7 +161,7 @@ Example of a alert web component in Vue
 <cds-alert status="info" :closable="true" @closeChange="log"> Hello World </cds-alert>`
 ```
 
-<a href="https://github.com/vmware/clarity/tree/master/apps/core-vue-cli" target="_blank" rel="noopener">
+<a href="https://github.com/vmware/clarity/tree/next/apps/core-vue-cli" target="_blank" rel="noopener">
   <cds-button status="primary" size="md">Example Vue App</cds-button>
 </a>
 
@@ -173,7 +176,7 @@ we have developed a library of [React wrapper components](https://reactjs.org/do
 npm install @cds/react --save
 ```
 
-Once installed import the component into your JavaScript or Typescript file.
+Once installed import the component into your JavaScript or Typescript file. You'll repeat these steps for any additional components that you use.
 
 ```typescript
 import { CdsAlert } from '@cds/react/alert';
@@ -229,7 +232,7 @@ export default class App extends React.Component<{}, {}> {
 }
 ```
 
-<a href="https://github.com/vmware/clarity/tree/master/apps/core-create-react-app" target="_blank" rel="noopener">
+<a href="https://github.com/vmware/clarity/tree/next/apps/core-create-react-app" target="_blank" rel="noopener">
   <cds-button status="primary" size="md">Example React App</cds-button>
 </a>
 
@@ -306,7 +309,7 @@ To listen to custom events use the [`ng-on` directive](https://docs.angularjs.or
 </cds-alert>
 ```
 
-<a href="https://github.com/vmware/clarity/tree/master/apps/core-angular-js" target="_blank" rel="noopener">
+<a href="https://github.com/vmware/clarity/tree/next/apps/core-angular-js" target="_blank" rel="noopener">
   <cds-button status="primary" size="md">Example AngularJS App</cds-button>
 </a>
 

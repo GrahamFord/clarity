@@ -1,8 +1,10 @@
 /*
- * Copyright (c) 2016-2020 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2021 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
+import { isNilOrEmpty, isNumericString } from './identity.js';
 
 export function transformToString(delimiter: string, fns: any[], ...args: any[]): string {
   return fns
@@ -66,3 +68,56 @@ export const cssGroup = 'CSS Custom Properties';
 
 /** Used for Storybook docs to define knob group for JavaScript properties */
 export const propertiesGroup = 'Default Properties';
+
+export function getNumericValueFromCssSecondsStyleValue(styleValueInSeconds: string): number {
+  const secondsStringChecker = /(\d+)?\.?(\d+)?s/g;
+  if (!styleValueInSeconds || !styleValueInSeconds.match(secondsStringChecker)) {
+    return 0; // validate expected input
+  }
+  const copyVal = styleValueInSeconds.substr(0, styleValueInSeconds.length - 1); // cut off trailing 's'
+
+  return isNumericString(copyVal) ? Number(copyVal) : 0;
+}
+
+export function isPrefixedOrSuffixedBy(str: string, stringFix: string, prefixOrSuffix = 'prefix'): boolean {
+  if (isNilOrEmpty(stringFix) || isNilOrEmpty(str)) {
+    return false;
+  }
+  const myFixToTest = prefixOrSuffix === 'prefix' ? str.substr(0, stringFix.length) : str.substr(-1 * stringFix.length);
+  return myFixToTest === stringFix;
+}
+
+export function isPrefixedBy(str: string, prefix: string): boolean {
+  return isPrefixedOrSuffixedBy(str, prefix, 'prefix');
+}
+
+export function isSuffixedBy(str: string, suffix: string): boolean {
+  return isPrefixedOrSuffixedBy(str, suffix, 'suffix');
+}
+
+export function removePrefixOrSuffix(str: string, stringFix: string, prefixOrSuffix = 'prefix'): string {
+  if (isNilOrEmpty(str)) {
+    return '';
+  }
+
+  if (isNilOrEmpty(stringFix) || !isPrefixedOrSuffixedBy(str, stringFix, prefixOrSuffix)) {
+    return str;
+  }
+
+  switch (prefixOrSuffix) {
+    case 'prefix':
+      return str.substr(stringFix.length);
+    case 'suffix':
+      return str.substr(0, str.length - stringFix.length);
+    default:
+      return str;
+  }
+}
+
+export function removePrefix(str: string, prefix: string): string {
+  return removePrefixOrSuffix(str, prefix, 'prefix');
+}
+
+export function removeSuffix(str: string, suffix: string): string {
+  return removePrefixOrSuffix(str, suffix, 'suffix');
+}

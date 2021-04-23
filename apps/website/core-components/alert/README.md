@@ -113,7 +113,7 @@ There are four different status of standard alerts: error, warning, info, and su
 
 :::component-section-level-three
 
-Reserved for warnings: a message that needs the user's attention and acknowledgment but might not cause errors.
+Reserved for errors, malfunctions, as well as critical issues like license expiration.
 
 <div>
 !!!include(.vuepress/code/core-usage-demos/alert/standard-error.html)!!!
@@ -334,7 +334,7 @@ Provides info to user’s in context. Be careful not to overuse to replace regul
 
 Place app-level alerts at the very top of the global context. Be careful not to place them in any other configuration.
 
-<ClrImage title="Image that shows App level alert above the page header." src="/images/angular-components/alert/app_level_placement.png" />
+<ClrImage title="Image that shows App level alert above the page header." src="/images/core-components/alert/app_level_placement.png" />
 :::
 
 ::: component-section-level-one-title

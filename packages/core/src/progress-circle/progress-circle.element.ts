@@ -28,11 +28,12 @@ import { styles } from './progress-circle.element.css.js';
  * ```html
  * <cds-progress-circle status="info" value="25"></cds-progress-circle>
  * ```
- * @beta
+ *
  * @element cds-progress-circle
  * @cssprop --ring-color
  * @cssprop --ring-opacity
  * @cssprop --fill-color
+ * @cssprop --fill-speed
  */
 export class CdsProgressCircle extends LitElement {
   private _size: string;

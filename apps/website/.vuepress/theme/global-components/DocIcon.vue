@@ -1,5 +1,5 @@
 <template>
-  <div class="clr-col-md-4 clr-col-sm-6 clr-col-12" :id="iconName">
+  <div :id="iconName">
     <button
       type="button"
       class="icon-detail-trigger"
@@ -8,17 +8,28 @@
       :class="{ 'is-active': isActive }"
       :aria-label="`Demo ${iconName}, button`"
     >
-      <slot></slot> {{ iconName }}
+      <slot></slot> {{ iconName }} &nbsp;&nbsp;<cds-icon
+        shape="new"
+        size="md"
+        style="--color: var(--cds-alias-status-alt);"
+        v-if="isNew"
+      ></cds-icon>
     </button>
   </div>
 </template>
 
 <script>
+import IconInventory from '../../../data/icon-inventory';
 export default {
   name: 'DocIcon',
   props: {
     iconName: String,
     isActive: Boolean,
+  },
+  computed: {
+    isNew: function () {
+      return IconInventory.isNew(this.iconName);
+    },
   },
   methods: {
     openDetail: function (event, iconName) {
@@ -59,6 +70,7 @@ export default {
   width: 100%;
   padding: 0.75rem 0.25rem;
   text-align: left;
+  z-index: 99;
   &.is-active {
     border-top-left-radius: 0.15rem;
     border-top-right-radius: 0.15rem;

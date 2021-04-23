@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2020 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2021 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -32,12 +32,13 @@ import { styles } from './accordion-header.element.css.js';
  * </cds-accordion>
  * ```
  *
- * @beta
  * @element cds-accordion-header
  * @cssprop --color
  * @cssprop --font-size
  * @cssprop --font-weight
  * @cssprop --background
+ * @cssprop --icon-color
+ * @cssprop --icon-transform
  */
 export class CdsAccordionHeader extends LitElement {
   connectedCallback() {
@@ -48,7 +49,7 @@ export class CdsAccordionHeader extends LitElement {
   render() {
     return html`<div class="private-host" cds-layout="horizontal gap:md align:vertical-center">
       <cds-icon class="accordion-angle" shape="angle" size="9" inner-offset="2"></cds-icon>
-      <span cds-text="secondary"><slot></slot></span>
+      <div cds-text="secondary" cds-layout="align:stretch"><slot></slot></div>
     </div>`;
   }
 

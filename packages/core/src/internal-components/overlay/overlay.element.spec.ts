@@ -1,12 +1,13 @@
 /*
- * Copyright (c) 2016-2020 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2021 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import { html } from 'lit-html';
 import '@cds/core/internal-components/overlay/register.js';
-import { CdsInternalOverlay, isNestedOverlay } from '@cds/core/internal-components/overlay';
-import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test/utils';
+import { CdsInternalOverlay, isNestedOverlay, overlayIsActive } from '@cds/core/internal-components/overlay';
+import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
+import { FocusTrapTracker } from '@cds/core/internal';
 
 describe('Overlay helper functions: ', () => {
   describe('isNestedOverlay() - ', () => {
@@ -15,12 +16,24 @@ describe('Overlay helper functions: ', () => {
       expect(isNestedOverlay('ohai_2', 'ohai_', ['ohai_1', 'ohai_2', 'ohai_3'])).toBe(true, 'middle one checks');
     });
 
+    // this situation happens during an update loop when the focus trap list is updated just
+    // prior to the rest of the component and the component still needs to think of itself as
+    // "nested" or "layered". a good example is running an exit animation asynchronously
+    // outside of the update loop.
+    it('should return true if id is not present and it was previously present', () => {
+      expect(isNestedOverlay('ohai_2', 'ohai_', ['abcd', 'ohai_1', 'efgh', 'ijkl'], true)).toBe(true);
+    });
+
     it('should ignore non-prefixed ids', () => {
       expect(isNestedOverlay('ohai_2', 'ohai_', ['abcd', 'ohai_1', 'efgh', 'ijkl', 'ohai_2'])).toBe(true);
     });
 
     it('should return false if id is not present', () => {
       expect(isNestedOverlay('ohai_2', 'ohai_', ['abcd', 'ohai_1', 'efgh', 'ijkl'])).toBe(false);
+    });
+
+    it('should return false if id is not present and it was previously not present', () => {
+      expect(isNestedOverlay('ohai_2', 'ohai_', ['abcd', 'ohai_1', 'efgh', 'ijkl'], false)).toBe(false);
     });
 
     it('should return false if id is first in the list', () => {
@@ -33,6 +46,32 @@ describe('Overlay helper functions: ', () => {
 
     it('should return false if list is empty', () => {
       expect(isNestedOverlay('ohai_1', 'ohai_', [])).toBe(false);
+    });
+  });
+  describe('overlayIsActive - ', () => {
+    let overlayElement: HTMLElement;
+    let overlay: CdsInternalOverlay;
+
+    beforeEach(async () => {
+      overlayElement = await createTestElement(
+        html`<cds-internal-overlay id="rootOverlay"
+          >Placeholder<cds-internal-overlay id="secondOverlay">Ohai</cds-internal-overlay
+          ><cds-internal-overlay id="thirdOverlay">Kthxbye</cds-internal-overlay></cds-internal-overlay
+        >`
+      );
+      overlay = overlayElement.querySelector<CdsInternalOverlay>('#thirdOverlay');
+    });
+
+    afterEach(() => {
+      removeTestElement(overlayElement);
+    });
+
+    it('identifies top-most overlay', async () => {
+      const fttIds = FocusTrapTracker.getTrapIds();
+      await componentIsStable(overlay);
+
+      expect(overlayIsActive(fttIds.pop())).toBe(true, 'the top overly is not active');
+      fttIds.forEach(item => expect(overlayIsActive(item)).toBe(false, 'a hidden overlay is active'));
     });
   });
 });
@@ -201,15 +240,6 @@ describe('Nested overlays: ', () => {
       await componentIsStable(secondOverlay);
 
       thirdBackdrop.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
-    });
-  });
-
-  describe('overlayIsActive - ', () => {
-    it('identifies top-most overlay', async () => {
-      await componentIsStable(thirdOverlay);
-      expect(firstOverlay.overlayIsActive).toBe(false, 'root is NOT the top-most overlay');
-      expect(secondOverlay.overlayIsActive).toBe(false, 'second is NOT the top-most overlay');
-      expect(thirdOverlay.overlayIsActive).toBe(true, 'third is the top-most overlay');
     });
   });
 

@@ -28,6 +28,10 @@ svg {
 }
 
 // sizing
+:host([size='xs']) {
+  @include equilateral(#{$cds-global-space-5});
+}
+
 :host([size='sm']) {
   // weirdly, the default... 16px
   @include equilateral(#{$cds-global-space-7});
@@ -55,11 +59,11 @@ svg {
 
 // colors
 :host([status='success']) {
-  --color: #{$cds-alias-status-success-shade};
+  --color: #{$cds-alias-status-success};
 }
 
 :host([status='danger']) {
-  --color: #{$cds-alias-status-danger-shade};
+  --color: #{$cds-alias-status-danger};
 }
 
 :host([status='warning']) {

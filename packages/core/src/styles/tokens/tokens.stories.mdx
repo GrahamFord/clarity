@@ -22,17 +22,17 @@ always be prefered over global and component tokens. Component tokens are values
 that are highly specific to a component instance. These values should be rarely
 changed in the system.
 
-```scss
-// raw value
+```css
+/* raw value */
 hsl(93, 80, 23)
 
-// global token
+/* global token */
 --cds-global-color-green-800 
 
-// alias token
+/* alias token */
 --cds-alias-color-status-success
 
-// component token
+/* component token */
 my-element {
   --background: some-color;
 }
@@ -84,6 +84,16 @@ Space tokens describe the size and space within objects/components of a UI.
 
 <Preview>
   <Story id="stories-design-tokens--typography" />
+</Preview>
+
+## Global Motion
+
+<Preview>
+  <Story id="stories-design-tokens--animation-duration" />
+</Preview>
+
+<Preview>
+  <Story id="stories-design-tokens--animation-easing" />
 </Preview>
 
 ## Global Color Palette

@@ -1,34 +1,45 @@
 import React from 'react';
-import { CdsAccordion, CdsAccordionPanel, CdsAccordionHeader, CdsAccordionContent } from './src/accordion';
-import { CdsAlert, CdsAlertActions, CdsAlertGroup } from './src/alert';
-import { CdsButton } from './src/button';
-import { CdsBadge } from './src/badge';
-import { CdsCheckbox } from './src/checkbox';
-import { CdsControl, CdsControlMessage, CdsFormGroup } from './src/forms';
-import { CdsDatalist } from './src/datalist';
-import { CdsDate } from './src/date';
-import { CdsFile } from './src/file';
-import { CdsIcon } from './src/icon';
-import { CdsInput } from './src/input';
-import { CdsModal, CdsModalActions, CdsModalContent, CdsModalHeader } from './src/modal';
-import { CdsPassword } from './src/password';
-import { CdsProgressCircle } from './src/progress-circle';
-import { CdsRadio, CdsRadioGroup } from './src/radio';
-import { CdsRange } from './src/range';
-import { CdsSearch } from './src/search';
-import { CdsSelect } from './src/select';
-import { CdsTag } from './src/tag';
-import { CdsTime } from './src/time';
-import { CdsTextarea } from './src/textarea';
-import { CdsToggle, CdsToggleGroup } from './src/toggle';
+import {
+  CdsAccordion,
+  CdsAccordionPanel,
+  CdsAccordionHeader,
+  CdsAccordionContent,
+} from './dist/react/accordion/index.js';
+import { CdsAlert, CdsAlertActions, CdsAlertGroup } from './dist/react/alert/index.js';
+import { CdsButton } from './dist/react/button/index.js';
+import { CdsBadge } from './dist/react/badge/index.js';
+import { CdsCheckbox } from './dist/react/checkbox/index.js';
+import { CdsControl, CdsControlMessage, CdsFormGroup } from './dist/react/forms/index.js';
+import { CdsDatalist } from './dist/react/datalist/index.js';
+import { CdsDate } from './dist/react/date/index.js';
+import { CdsFile } from './dist/react/file/index.js';
+import { CdsIcon } from './dist/react/icon/index.js';
+import { CdsInput } from './dist/react/input/index.js';
+import { CdsModal, CdsModalActions, CdsModalContent, CdsModalHeader } from './dist/react/modal/index.js';
+import { CdsPassword } from './dist/react/password/index.js';
+import { CdsProgressCircle } from './dist/react/progress-circle/index.js';
+import { CdsRadio, CdsRadioGroup } from './dist/react/radio/index.js';
+import { CdsRange } from './dist/react/range/index.js';
+import { CdsSearch } from './dist/react/search/index.js';
+import { CdsSelect } from './dist/react/select/index.js';
+import { CdsTag } from './dist/react/tag/index.js';
+import { CdsTime } from './dist/react/time/index.js';
+import { CdsTextarea } from './dist/react/textarea/index.js';
+import { CdsToggle, CdsToggleGroup } from './dist/react/toggle/index.js';
 import { ClarityIcons, userIcon, timesIcon } from '@cds/core/icon';
-import { CdsDivider } from './src/divider';
+import { CdsDivider } from './dist/react/divider/index.js';
 
 ClarityIcons.addIcons(userIcon, timesIcon);
 
 interface AppState {
   modalOpen: boolean;
   modal2Open: boolean;
+  modalReady: boolean;
+  modal2Ready: boolean;
+  panel1Expanded: boolean;
+  panel2Expanded: boolean;
+  panel3Expanded: boolean;
+  panel4Expanded: boolean;
 }
 
 export default class App extends React.Component<{}, AppState> {
@@ -36,15 +47,20 @@ export default class App extends React.Component<{}, AppState> {
 
   constructor(props: any) {
     super(props);
-    this.state = { modalOpen: false, modal2Open: false };
+    this.state = {
+      modalOpen: false,
+      modal2Open: false,
+      modalReady: false,
+      modal2Ready: false,
+      panel1Expanded: true,
+      panel2Expanded: false,
+      panel3Expanded: false,
+      panel4Expanded: false,
+    };
     this.buttonRef = React.createRef<typeof CdsButton & HTMLButtonElement>();
   }
 
   componentDidMount() {
-    // (this.buttonRef.current as any).nativeElement.then((element: any) => {
-    //   element.focus();
-    // });
-
     this.buttonRef.current.focus();
   }
 
@@ -55,36 +71,102 @@ export default class App extends React.Component<{}, AppState> {
   render() {
     const isModalOpen = this.state.modalOpen;
     const isModal2Open = this.state.modal2Open;
+    const isModalReady = this.state.modalReady;
+    const panel1Expanded = this.state.panel1Expanded;
+    const panel2Expanded = this.state.panel2Expanded;
+    const panel3Expanded = this.state.panel3Expanded;
+    const panel4Expanded = this.state.panel4Expanded;
+
     return (
       <div>
         <h1>Rendered by React!</h1>
+        <h2>Accordion</h2>
         <CdsAccordion>
-          <CdsAccordionPanel expanded>
+          <CdsAccordionPanel
+            expanded={panel1Expanded}
+            onExpandedChange={() => {
+              const newVal = !panel1Expanded;
+              this.setState({ panel1Expanded: newVal });
+            }}
+          >
             <CdsAccordionHeader>Item 1</CdsAccordionHeader>
             <CdsAccordionContent>Content 1</CdsAccordionContent>
           </CdsAccordionPanel>
-          <CdsAccordionPanel>
+          <CdsAccordionPanel
+            expanded={panel2Expanded}
+            onExpandedChange={() => {
+              const newVal = !panel2Expanded;
+              this.setState({ panel2Expanded: newVal });
+            }}
+          >
             <CdsAccordionHeader>Item 2</CdsAccordionHeader>
             <CdsAccordionContent>
               <CdsAccordion>
-                <CdsAccordionPanel>
+                <CdsAccordionPanel
+                  expanded={panel4Expanded}
+                  onExpandedChange={() => {
+                    const newVal = !panel4Expanded;
+                    this.setState({ panel4Expanded: newVal });
+                  }}
+                >
                   <CdsAccordionHeader>Item 2-1</CdsAccordionHeader>
-                  <CdsAccordionContent>Content 2-1</CdsAccordionContent>
+                  <CdsAccordionContent>
+                    <p cds-text="body">
+                      Hundreds of thousands hydrogen atoms the sky calls to us not a sunrise but a galaxyrise culture
+                      courage of our questions. Concept of the number one courage of our questions tingling of the spine
+                      Flatland explorations are creatures of the cosmos. Finite but unbounded great turbulent clouds a
+                      still more glorious dawn awaits corpus callosum vastness is bearable only through love
+                      dispassionate extraterrestrial observer. The carbon in our apple pies extraordinary claims require
+                      extraordinary evidence a very small stage in a vast cosmic arena gathered by gravity extraordinary
+                      claims require extraordinary evidence permanence of the stars and billions upon billions upon
+                      billions upon billions upon billions upon billions upon billions.
+                    </p>
+                  </CdsAccordionContent>
                 </CdsAccordionPanel>
               </CdsAccordion>
             </CdsAccordionContent>
           </CdsAccordionPanel>
-          <CdsAccordionPanel disabled>
-            <CdsAccordionHeader>Item 3</CdsAccordionHeader>
+          <CdsAccordionPanel
+            disabled
+            expanded={panel3Expanded}
+            onExpandedChange={() => {
+              const newVal = !panel3Expanded;
+              this.setState({ panel3Expanded: newVal });
+            }}
+          >
+            <CdsAccordionHeader>Item 3 – Should Not Open</CdsAccordionHeader>
             <CdsAccordionContent>Content 3</CdsAccordionContent>
           </CdsAccordionPanel>
         </CdsAccordion>
-        <CdsButton ref={this.buttonRef} onClick={() => this.setState({ modalOpen: true })}>
-          Open Modal
-        </CdsButton>
-        {isModalOpen ? (
+        <h2>Modal</h2>
+        <div>
+          <CdsButton
+            ref={this.buttonRef}
+            onClick={() => {
+              this.setState({ modalReady: true });
+              const timer = setTimeout(() => {
+                this.setState({ modalOpen: true });
+                clearTimeout(timer);
+              }, 25);
+            }}
+          >
+            Open Modal
+          </CdsButton>
+        </div>
+        {isModalReady ? (
           <div>
-            <CdsModal hidden={!isModalOpen} onCloseChange={() => this.setState({ modalOpen: false })}>
+            <CdsModal
+              hidden={!isModalOpen}
+              onCloseChange={() => {
+                this.setState({ modalOpen: false });
+              }}
+              onCdsMotionChange={e => {
+                const motionMsg = (e as CustomEvent).detail;
+                if (motionMsg === 'cds-modal-enter-reverse animation done') {
+                  this.setState({ modalReady: false });
+                }
+              }}
+            >
               <CdsModalHeader>
                 <h3 cds-text="title">My Modal</h3>
               </CdsModalHeader>

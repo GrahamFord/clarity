@@ -5,13 +5,12 @@
  */
 
 import { html, TemplateResult } from 'lit-html';
-import { default as tokenData } from '../tokens/generated/tokens.json';
+import { default as tokenData } from '@cds/core/tokens/tokens.json';
 
 export default {
   title: 'Stories/Themes',
   parameters: {
     options: { showPanel: true },
-    a11y: { disable: true },
   },
 };
 
@@ -381,5 +380,25 @@ export function dynamicTheme() {
       </div>
       <pre id="dynamic-props" cds-layout="col:12"></pre>
     </section>
+  `;
+}
+
+export function lowMotionTheme() {
+  return html`
+    <div cds-layout="horizontal gap:md">
+      <h3 cds-text="subsection">Default</h3>
+      <div cds-theme="" class="animation-demo" style="--duration: var(--cds-global-animation-duration-slowest)">
+        <div class="animation"></div>
+      </div>
+
+      <h3 cds-text="subsection">Low Motion</h3>
+      <div
+        cds-theme="low-motion"
+        class="animation-demo"
+        style="--duration: var(--cds-global-animation-duration-slowest)"
+      >
+        <div class="animation"></div>
+      </div>
+    </div>
   `;
 }

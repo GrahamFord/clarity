@@ -1,28 +1,16 @@
 /*
- * Copyright (c) 2016-2020 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2021 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {
-  Component,
-  OnDestroy,
-  Optional,
-  ContentChild,
-  AfterViewInit,
-  ViewChild,
-  ElementRef,
-  Input,
-} from '@angular/core';
-import { NgControl } from '@angular/forms';
+import { Component, Optional, ViewChild, ElementRef, Input, AfterViewInit } from '@angular/core';
 
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
-import { ClrLabel } from '../common/label';
 
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -35,9 +23,8 @@ import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-posit
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { Subscription } from 'rxjs';
-import { IfControlStateService, CONTROL_STATE } from '../common/if-control-state/if-control-state.service';
-import { ClrControlSuccess } from '../common/success';
+import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { ClrAbstractContainer } from '../common/abstract-container';
 
 @Component({
   selector: 'clr-date-container',
@@ -108,16 +95,8 @@ import { ClrControlSuccess } from '../common/success';
     '[class.clr-row]': 'addGrid()',
   },
 })
-export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewInit {
-  _dynamic = false;
-  showInvalid = false;
-  showHelper = false;
+export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
-  showValid = false;
-  state: CONTROL_STATE;
-  control: NgControl;
-  @ContentChild(ClrLabel) label: ClrLabel;
-  @ContentChild(ClrControlSuccess) controlSuccessComponent: ClrControlSuccess;
 
   @Input('clrPosition')
   set clrPosition(position: string) {
@@ -139,8 +118,6 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
     this.toggleButton = button;
   }
 
-  private subscriptions: Subscription[] = [];
-
   constructor(
     private toggleService: ClrPopoverToggleService,
     private dateNavigationService: DateNavigationService,
@@ -149,11 +126,13 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
     public commonStrings: ClrCommonStringsService,
     private focusService: FocusService,
     private viewManagerService: ViewManagerService,
-    private controlClassService: ControlClassService,
-    @Optional() private layoutService: LayoutService,
-    private ngControlService: NgControlService,
-    private ifControlStateService: IfControlStateService
+    protected controlClassService: ControlClassService,
+    @Optional() protected layoutService: LayoutService,
+    protected ngControlService: NgControlService,
+    protected ifControlStateService: IfControlStateService
   ) {
+    super(ifControlStateService, layoutService, controlClassService, ngControlService);
+
     this.subscriptions.push(
       this.focusService.focusChange.subscribe(state => {
         this.focus = state;
@@ -161,25 +140,8 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
     );
 
     this.subscriptions.push(
-      this.ngControlService.controlChanges.subscribe(control => {
-        this.control = control;
-      })
-    );
-
-    this.subscriptions.push(
       this.toggleService.openChange.subscribe(() => {
         this.dateFormControlService.markAsTouched();
-      })
-    );
-  }
-
-  ngOnInit() {
-    this.subscriptions.push(
-      this.ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
-        this.state = state;
-        this.showValid = CONTROL_STATE.VALID === state && !!this.controlSuccessComponent;
-        this.showInvalid = CONTROL_STATE.INVALID === state;
-        this.showHelper = CONTROL_STATE.NONE === state || (!this.showInvalid && !this.controlSuccessComponent);
       })
     );
   }
@@ -194,20 +156,6 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
         }
       })
     );
-  }
-
-  /**
-   * Returns the classes to apply to the control
-   */
-  controlClass() {
-    return this.controlClassService.controlClass(this.state, this.addGrid());
-  }
-
-  /**
-   * Determines if the control needs to add grid classes
-   */
-  addGrid() {
-    return this.layoutService && !this.layoutService.isVertical();
   }
 
   /**
@@ -232,12 +180,5 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
    */
   private initializeCalendar(): void {
     this.dateNavigationService.initializeCalendar();
-  }
-
-  /**
-   * Unsubscribe from subscriptions.
-   */
-  ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

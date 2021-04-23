@@ -7,7 +7,7 @@
     },
     {
       "path": "./dist/core/styles/module.layout.min.css",
-      "maxSize": "4.1 kB",
+      "maxSize": "3.9 kB",
       "compression": "brotli"
     },
     {
@@ -22,12 +22,17 @@
     },
     {
       "path": "./dist/core/styles/module.typography.min.css",
-      "maxSize": "1.75 kB",
+      "maxSize": "1.7 kB",
       "compression": "brotli"
     },
     {
       "path": "./dist/core/styles/module.shims.min.css",
       "maxSize": "1 kB",
+      "compression": "brotli"
+    },
+    {
+      "path": "./dist/core/styles/theme.dark.min.css",
+      "maxSize": "0.5 kB",
       "compression": "brotli"
     },
     {
@@ -37,7 +42,7 @@
     },
     {
       "path": "./dist/test-bundles/webpack.bundle.js",
-      "maxSize": "16 kB",
+      "maxSize": "16.5 kB",
       "compression": "brotli"
     }
   ]

@@ -67,6 +67,20 @@ export default class App extends Component<AppProps, AppState> {
             flat disabled
           </CdsButton>
         </section>
+        <section cds-layout="horizontal gap:sm">
+          <CdsButton loadingState="default">
+            Default
+          </CdsButton>
+          <CdsButton loadingState="loading">
+            Default
+          </CdsButton>
+          <CdsButton loadingState="success">
+            Default
+          </CdsButton>
+          <CdsButton loadingState="error">
+            Default
+          </CdsButton>
+        </section>
 
         <h2 cds-text="section">Tags</h2>
         <section cds-layout="horizontal gap:sm">

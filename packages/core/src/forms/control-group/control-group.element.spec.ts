@@ -5,7 +5,7 @@
  */
 
 import { html } from 'lit-html';
-import { removeTestElement, createTestElement, componentIsStable } from '@cds/core/test/utils';
+import { removeTestElement, createTestElement, componentIsStable } from '@cds/core/test';
 import { CdsControl, CdsInternalControlGroup } from '@cds/core/forms';
 import '@cds/core/forms/register.js';
 import { CdsControlMessage } from '../control-message/control-message.element';
@@ -89,6 +89,22 @@ describe('cds-internal-control-group', () => {
     await componentIsStable(controls[0]);
     expect(controls[0].status).toBe('error');
     expect(controls[1].status).toBe('error');
+  });
+
+  it('should set the disabled style on all cds-controls and native html inputs if group is disabled', async () => {
+    controlGroup.disabled = true;
+
+    await componentIsStable(controlGroup);
+    await componentIsStable(controls[0]);
+    await componentIsStable(controls[1]);
+
+    // cds-control has style hook attr '_disabled'
+    expect(controls[0].hasAttribute('_disabled')).toBe(true);
+    expect(controls[1].hasAttribute('_disabled')).toBe(true);
+
+    // native html input has attr 'disabled'
+    expect(controls[0].inputControl.hasAttribute('disabled')).toBe(true);
+    expect(controls[1].inputControl.hasAttribute('disabled')).toBe(true);
   });
 
   it('should adjust for compact layouts and messages', async () => {

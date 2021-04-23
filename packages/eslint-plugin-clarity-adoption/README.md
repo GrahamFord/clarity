@@ -26,7 +26,19 @@ Configure in your ESLint config file like you see below. The overrides section i
     "@clr/clarity-adoption/no-clr-badge": "warn",
     "@clr/clarity-adoption/no-clr-button": "warn",
     "@clr/clarity-adoption/no-clr-checkbox": "warn",
-    "@clr/clarity-adoption/no-clr-icon": "warn"
+    "@clr/clarity-adoption/no-clr-datalist": "warn",
+    "@clr/clarity-adoption/no-clr-form": "warn",
+    "@clr/clarity-adoption/no-clr-icon": "warn",
+    "@clr/clarity-adoption/no-clr-input": "warn",
+    "@clr/clarity-adoption/no-clr-label": "warn",
+    "@clr/clarity-adoption/no-clr-list": "warn",
+    "@clr/clarity-adoption/no-clr-modal": "warn",
+    "@clr/clarity-adoption/no-clr-password": "warn",
+    "@clr/clarity-adoption/no-clr-radio": "warn",
+    "@clr/clarity-adoption/no-clr-range": "warn",
+    "@clr/clarity-adoption/no-clr-select": "warn",
+    "@clr/clarity-adoption/no-clr-textarea": "warn",
+    "@clr/clarity-adoption/no-clr-toggle": "warn"
   },
   "overrides": [
     {
@@ -50,25 +62,28 @@ yarn
 yarn run watch
 ```
 
-2. Open another terminal window/tab, navigate to the `dist` directory and execute `yarn link`:
+2. Open another terminal window/tab, navigate to the `dist` directory and execute `npm link`:
 
 ```
 cd ../../dist/eslint-plugin-clarity-adoption
-yarn link
+npm link
 ```
+
+**NB:** `yarn link` doesn't work properly for linking the plugin. Please use `npm link` instead.
 
 3. Create a demo project, navigate to it and link the ESLint plugin:
 
 ```bash
 ng new linter-test-project
 cd linter-test-project
-yarn link @clr/eslint-plugin-clarity-adoption
+npm link @clr/eslint-plugin-clarity-adoption
 ```
 
 4. Install the other linter dependencies
 
 ```bash
-yarn add -D @typescript-eslint/parser eslint
+npm i -D @typescript-eslint/parser eslint
+npm i
 ```
 
 5. Add ESLint configuration for TypeScript and HTML.
@@ -89,7 +104,19 @@ yarn add -D @typescript-eslint/parser eslint
     "@clr/clarity-adoption/no-clr-badge": "warn",
     "@clr/clarity-adoption/no-clr-button": "warn",
     "@clr/clarity-adoption/no-clr-checkbox": "warn",
-    "@clr/clarity-adoption/no-clr-icon": "warn"
+    "@clr/clarity-adoption/no-clr-datalist": "warn",
+    "@clr/clarity-adoption/no-clr-form": "warn",
+    "@clr/clarity-adoption/no-clr-icon": "warn",
+    "@clr/clarity-adoption/no-clr-input": "warn",
+    "@clr/clarity-adoption/no-clr-label": "warn",
+    "@clr/clarity-adoption/no-clr-list": "warn",
+    "@clr/clarity-adoption/no-clr-modal": "warn",
+    "@clr/clarity-adoption/no-clr-password": "warn",
+    "@clr/clarity-adoption/no-clr-radio": "warn",
+    "@clr/clarity-adoption/no-clr-range": "warn",
+    "@clr/clarity-adoption/no-clr-select": "warn",
+    "@clr/clarity-adoption/no-clr-textarea": "warn",
+    "@clr/clarity-adoption/no-clr-toggle": "warn"
   },
   "overrides": [
     {

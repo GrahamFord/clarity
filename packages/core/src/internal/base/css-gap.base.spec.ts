@@ -5,14 +5,15 @@
  */
 
 import { LitElement, html } from 'lit-element';
-import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test/utils';
+import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
 import { applyCSSGapShim } from './css-gap.base.js';
 import { browserFeatures } from '../utils/supports.js';
 
 class GapShim extends LitElement {}
 class GapShimSupports extends LitElement {}
 
-window.customElements.define('gap-shim-support', applyCSSGapShim(GapShimSupports));
+const shimSupportsClass = applyCSSGapShim(GapShimSupports);
+window.customElements.define('gap-shim-support', shimSupportsClass);
 
 (browserFeatures as any).supports.flexGap = false; // force false flex gap support
 const shimClass = applyCSSGapShim(GapShim);
